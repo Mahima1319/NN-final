@@ -1,0 +1,323 @@
+Program to implement random classification.
+
+import matplotlib.pyplot as plt
+from sklearn import datasets
+x,y=datasets.make_blobs(n_samples=100,n_features=2,centers=2,cluster_std=1.05,ran
+fig=plt.figure(figsize=(10,8))
+plt.plot(x[:,0][y==0],x[:,1][y==0],'r^')
+plt.plot(x[:,0][y==1],x[:,1][y==1],'bs')
+plt.xlabel("feature 1")
+plt.ylabel("feature 2")
+plt.title('Random Classification Data with 2 classes')
+
+Program to implement binary classification.
+
+from numpy import where
+from collections import Counter
+from sklearn.datasets import make_blobs
+from matplotlib import pyplot
+X,y=make_blobs(n_samples=10,centers=2,random_state=1)
+print(X.shape,y.shape)
+counter=Counter(y)
+print(counter)
+for i in range(5):
+print(X[i],y[i])
+for label,_ in counter.items():
+row_ix=where(y==label)[0]
+pyplot.scatter(X[row_ix,0],X[row_ix,1],label=str(label))
+pyplot.legend()
+
+Program to implement the multi class classifier.
+
+from numpy import where
+from collections import Counter
+from sklearn.datasets import make_blobs
+from matplotlib import pyplot
+X,y=make_blobs(n_samples=1000,centers=3,random_state=1)
+print(X.shape,y.shape)
+counter=Counter(y)
+print(counter)
+for i in range(10):
+print(X[i],y[i])
+for label,_ in counter.items():
+row_ix=where(y==label)[0]
+pyplot.scatter(X[row_ix,0],X[row_ix,1],label=str(label))
+pyplot.legend()
+pyplot.show()
+
+Program to implement the sigmoid activation function in a feed forward ANN.
+
+#back propagation in single neuron
+#BACK PROPOGATION IN SINGLE WINDOW
+import numpy as np
+i=1.5 w_o=0.0 y=0.5
+#eeta r=0.01 def
+dc_dw(a,y,i):
+dc_da=2*(a-y)
+da_dw=i return
+dc_da*da_dw
+w=[w_o] a=[w_o*i]
+for j in range(0,100):
+a.append(w[-1]*i)
+w.append(w[-1]-r*dc_dw(a[-1],y,i)) if(a[-1]-
+y)**2<0.001:
+break
+print(a)
+print(" ")
+print(w)
+
+Program to implement the sigmoid activation function in a feed forward ANN.
+
+import numpy as np
+class NeuralNetwork():
+def init (self):
+np.random.seed(1)
+self.synaptic_weights=2*np.random.random((3,1)) -1
+def sigmoid(self,x):
+return 1/(1+np.exp(-x))
+defsigmoid_derivative(self,x):
+return x*(1-x)
+def train(self,training_inputs,training_outputs,training_iterations):
+for iteration in range(training_iterations):
+output=self.think(training_inputs)
+error=training_outputs-output
+adjustments=np.dot(training_inputs.T,error*self.sigmoid_derivative(output))
+self.synaptic_weights += adjustments
+def think(self,inputs):
+inputs=inputs.astype(float)
+output=self.sigmoid(np.dot(inputs,self.synaptic_weights))
+return output
+if name ==" main ":
+neuron=NeuralNetwork()
+print("Beginning Randomly Generated weights: ")
+print(neuron.synaptic_weights)
+training_inputs=np.array([[0,0,1],[1,1,1],[1,0,1],[0,1,1]])
+training_outputs=np.array([[0,1,1,0]]).T
+neuron.train(training_inputs,training_outputs, 15000)
+print("Ending Weights After Training")
+print(neuron.synaptic_weights)
+user_input_one=str(input("User Input One : "))
+user_input_two=str(input("User Input Two : "))
+user_input_three=str(input("User Input Three : "))
+print("Considering New Situation: ",user_input_one, user_input_two,
+user_input_three)
+print("New Output data: ")
+print(neuron.think(np.array([user_input_one, user_input_two, user_input_three])))
+print("Wow, we did it!")
+
+Program to implement ANN by back propagation algorithm.
+import numpy as np
+X=np.array(([2,9],[1,5],[3,6]),dtype=float)
+y=np.array(([92],[86],[89]),dtype=float)
+X=X/np.amax(X,axis=0)
+y=y/100
+def sigmoid(X):
+return 1/(1+np.exp(-X))
+def derivatives_sigmoid(x):
+return x*(1-x)
+epoch=7000
+lr=0.1
+inputlayer_neurons=2
+hiddenlayer_neurons=3
+output_neurons=1
+wh=np.random.uniform(size=(inputlayer_neurons,hiddenlayer_neurons))
+bh=np.random.uniform(size=(1,hiddenlayer_neurons))
+wout=np.random.uniform(size=(hiddenlayer_neurons,output_neurons))
+bout=np.random.uniform(size=(1,output_neurons))
+for i in range(epoch):
+hinp1=np.dot(X,wh)
+hinp=hinp1+bh
+hlayer_act=sigmoid(hinp)
+outinp1=np.dot(hlayer_act,wout)
+outinp=outinp1+bout
+output=sigmoid(outinp)
+EO=y-output
+outgrad=derivatives_sigmoid(output)
+d_output=EO*outgrad
+EH=d_output.dot(wout.T)
+hiddengrad=derivatives_sigmoid(hlayer_act)
+d_hiddenlayer=EH*hiddengrad
+wout+=hlayer_act.T.dot(d_output)*lr
+wh+=X.T.dot(d_hiddenlayer)*lr
+print("Input:\n"+str(X))
+print("Actual Output:\n"+str(y))
+print("Predicted Output:\n"+str(output))
+
+Program to implement the sigmoid activation function in a feed forward ANN.
+
+import pandas as pd
+import numpy as np
+from sklearn import metrics
+from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+url = "https://raw.githubusercontent.com/Statology/Python-Guides/main/default.csv"
+data = pd.read_csv(url)
+x=data[['student','balance','income']]
+y=data['default']
+x_train,x_test,y_train,y_test,= train_test_split(x,y,test_size=0.3,random_state=0)
+log_regression= LogisticRegression()
+log_regression.fit(x_train,y_train)
+#define metrics
+y_pred_proba=log_regression.predict_proba(x_test)[::,1]
+fpr,tpr, _ = metrics.roc_curve(y_test,y_pred_proba)
+plt.plot(fpr,tpr)
+plt.ylabel("True Positive Rate")
+plt.xlabel("False Positive Rate")
+plt.show()
+#define metrics
+y_pred_proba=log_regression.predict_proba(x_test)[::,1]
+fpr,tpr, _ = metrics.roc_curve(y_test,y_pred_proba)
+auc = metrics.roc_auc_score(y_test,y_pred_proba)
+plt.plot(fpr,tpr, label="AUC" + str(auc))
+plt.ylabel("True Positive Rate")
+plt.xlabel("False Positive Rate")
+plt.legend(loc=4)
+plt.show()
+
+Program to implement the sigmoid activation function in a feed forward ANN.
+
+# XOR Logic Gate Implementation using ANN
+import numpy as np
+from keras.models import Sequential
+from keras.layers.core import Dense
+training_data = np.array([[0,0],[0,1],[1,0],[1,1]], "float32")
+target_data = np.array([[0],[1],[1],[0]], "float32")
+model = Sequential()
+model.add(Dense(16,input_dim=2, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+model.compile(loss='mean_squared_error',optimizer='adam',metrics=['binary_accuracy
+])
+model.fit(training_data, target_data, epochs=1000)
+scores = model.evaluate(training_data, target_data)
+print("\n%s: %.2f%%" % (model.metrics_names[1], scores[1]*100))
+print(model.predict(training_data).round())
+
+Program to implement the sigmoid activation function in a feed forward ANN.
+
+neighbors on the Iris Flowers Datasetfrom
+random import seed
+from random import randrange
+from csv import reader
+from math import sqrt
+# Load a CSV file
+def load_csv(filename):
+dataset = list()
+with open(filename, 'r') as file:
+csv_reader = reader(file)
+for row in csv_reader:
+if not row:
+continue
+dataset.append(row)
+return dataset
+# Convert string column to float
+def str_column_to_float(dataset, column):
+for row in dataset:
+row[column] = float(row[column].strip())
+# Convert string column to integer
+def str_column_to_int(dataset, column):
+class_values = [row[column] for row in dataset]
+unique = set(class_values)
+lookup = dict()
+for i, value in enumerate(unique):
+lookup[value] = i
+for row in dataset:
+row[column] = lookup[row[column]]
+return lookup
+# Find the min and max values for each column
+def dataset_minmax(dataset):
+minmax = list()
+for i in range(len(dataset[0])):
+col_values = [row[i] for row in dataset]
+value_min = min(col_values)
+value_max = max(col_values)
+minmax.append([value_min, value_max])
+return minmax
+# Rescale dataset columns to the range 0-1
+def normalize_dataset(dataset, minmax):
+for row in dataset:
+for i in range(len(row)):
+row[i] = (row[i] - minmax[i][0]) / (minmax[i][1] - minmax[i][0])
+# Split a dataset into k folds
+def cross_validation_split(dataset, n_folds):
+dataset_split = list()
+dataset_copy = list(dataset)
+fold_size = int(len(dataset) / n_folds)
+for _ in range(n_folds):
+fold = list()
+while len(fold) < fold_size:
+index = randrange(len(dataset_copy))
+fold.append(dataset_copy.pop(index))
+dataset_split.append(fold)
+return dataset_split
+# Calculate accuracy percentage
+def accuracy_metric(actual, predicted):
+correct = 0
+for i in range(len(actual)):
+if actual[i] == predicted[i]:
+correct += 1
+return correct / float(len(actual)) * 100.0
+# Evaluate an algorithm using a cross validation split
+def evaluate_algorithm(dataset, algorithm, n_folds, *args):
+folds = cross_validation_split(dataset, n_folds)
+scores = list()
+for fold in folds:
+train_set = list(folds)
+train_set.remove(fold)
+train_set = sum(train_set, [])
+test_set = list()
+for row in fold:
+row_copy = list(row)
+test_set.append(row_copy)
+row_copy[-1] = None
+predicted = algorithm(train_set, test_set, *args)
+actual = [row[-1] for row in fold]
+accuracy = accuracy_metric(actual, predicted)
+scores.append(accuracy)
+return scores
+# Calculate the Euclidean distance between two vectors
+def euclidean_distance(row1, row2):
+distance = 0.0
+for i in range(len(row1)-1):
+distance += (row1[i] - row2[i])**2
+return sqrt(distance)
+# Locate the most similar neighbors
+def get_neighbors(train, test_row, num_neighbors):
+distances = list()
+for train_row in train:
+dist = euclidean_distance(test_row, train_row)
+distances.append((train_row, dist))
+distances.sort(key=lambda tup: tup[1])
+neighbors = list()
+for i in range(num_neighbors):
+neighbors.append(distances[i][0])
+return neighbors
+# Make a prediction with neighbors
+def predict_classification(train, test_row, num_neighbors):
+neighbors = get_neighbors(train, test_row, num_neighbors)
+output_values = [row[-1] for row in neighbors]
+prediction = max(set(output_values), key=output_values.count)
+return prediction
+# kNN Algorithm
+def k_nearest_neighbors(train, test, num_neighbors):
+predictions = list()
+for row in test:
+output = predict_classification(train, row, num_neighbors)
+redictions.append(output)
+return(predictions)
+# Test the kNN on the Iris Flowers dataset
+seed(1)
+filename = 'data.txt'
+dataset = load_csv(filename)
+for i in range(len(dataset[0])-1):
+str_column_to_float(dataset, i)
+# convert class column to integers
+str_column_to_int(dataset, len(dataset[0])-1)
+# evaluate algorithm
+n_folds = 5
+num_neighbors = 5
+scores = evaluate_algorithm(dataset, k_nearest_neighbors, n_folds, num_neighbors)
+print('Scores: %s' % scores)
+print('Mean Accuracy: %.3f%%% (sum(scores)/float(len(scores))))
+
+
